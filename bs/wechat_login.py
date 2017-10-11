@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from urllib import request, parse
 import time
 import re

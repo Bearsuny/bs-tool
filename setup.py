@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='bear_tool',
-    version='1.0.1',
+    name='bs-tool',
+    version='1.0.0',
     packages=find_packages(),
     scripts=[],
     entry_points={
@@ -11,9 +11,9 @@ setup(
         ]
     },
 
-    author='bearsuny',
+    author='Bearsuny',
     author_email='sir_fengfan@163.com',
-    description='bear_tool',
-    license='LGPL',
-    url='https://www.python.org/'
+    description='bs-tool',
+    license='GPL-3.0',
+    url='https://github.com/Bearsuny'
 )
