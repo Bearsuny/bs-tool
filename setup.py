@@ -7,7 +7,7 @@ setup(
     scripts=[],
     entry_points={
         'console_scripts': [
-            'wechat_login=bear_tool.wechat_login:main'
+            'wechat_login=bs.wechat_login:main'
         ]
     },
 

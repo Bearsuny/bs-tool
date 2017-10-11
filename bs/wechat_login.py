@@ -3,6 +3,9 @@ import time
 import re
 import os
 import webbrowser
+import sys
+import subprocess
+import signal
 
 
 def get_uuid():
@@ -39,10 +42,14 @@ def get_qrcode(uuid, path):
     with open(path, 'wb') as f:
         f.write(rsp.read())
 
-    os.popen('display {}'.format(path))
+    sp = subprocess.Popen(['display', path])
+
+    # fd = os.popen('display {}'.format(path))
 
     print('Done.')
     print('Please use your phone to scan the qrcode...')
+
+    return sp
 
 
 def login(uuid):
@@ -55,37 +62,46 @@ def login(uuid):
         '_': int(time.time())
     }
 
-    req = request.Request(url=url, data=parse.urlencode(data).encode('utf-8'))
-    rsp = request.urlopen(req).read().decode('utf-8')
+    try:
+        req = request.Request(url=url,
+                              data=parse.urlencode(data).encode('utf-8'))
+        rsp = request.urlopen(req).read().decode('utf-8')
 
-    regex = r'window.code=(\d+);'
-    code = re.search(regex, rsp).group(1)
+        regex = r'window.code=(\d+);'
+        code = re.search(regex, rsp).group(1)
+        link = ''
 
-    if code == '200':
-        print('Login success.')
-        regex = r'window.redirect_uri="(\S+?)"'
-        webbrowser.open(re.search(regex, rsp).group(1))
-    elif code == '201':
-        print('Done. Waiting confirm...')
-    elif code == '408':
-        print('Login timeout. Waiting scan...')
-    else:
-        print('window.code=' + str(code))
+        if code == '200':
+            print('Login success.')
+            regex = r'window.redirect_uri="(\S+?)"'
+            link = re.search(regex, rsp).group(1)
+        elif code == '201':
+            print('Done. Waiting confirm...')
+        elif code == '408':
+            print('Login timeout. Waiting scan...')
+        else:
+            print('window.code=' + str(code))
 
-    return code
+        return {'code': code, 'link': link}
+    except KeyboardInterrupt as err:
+        print(err)
+        print('Exit.')
+        sys.exit(0)
 
 
 def main():
     uuid = get_uuid()
     path = os.path.join(os.getcwd(), 'qrcode.png')
 
-    get_qrcode(uuid, path)
+    sp = get_qrcode(uuid, path)
 
-    while login(uuid) != '200':
+    info = login(uuid)
+    while info['code'] != '200':
+        info = login(uuid)
         pass
+
+    os.kill(sp.pid, signal.SIGTERM)
 
     os.remove(path)
 
-
-if __name__ == '__main__':
-    main()
+    webbrowser.open(info['link'])
