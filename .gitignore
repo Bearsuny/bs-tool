@@ -1,0 +1,9 @@
+# PyCharm
+.idea/
+
+# Virtual Environment
+venv/
+
+bear_tool.egg-info/
+build/
+dist/
