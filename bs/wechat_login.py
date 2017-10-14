@@ -44,8 +44,6 @@ def get_qrcode(uuid, path):
 
     sp = subprocess.Popen(['display', path])
 
-    # fd = os.popen('display {}'.format(path))
-
     print('Done.')
     print('Please use your phone to scan the qrcode...')
 

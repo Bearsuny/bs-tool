@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='bs-tool',
-    version='1.0.0',
+    version='1.0.1',
     packages=find_packages(),
     scripts=[],
     entry_points={
         'console_scripts': [
-            'wechat_login=bs.wechat_login:main'
+            'wechat_login=bs.wechat_login:main',
+            'bing_bg=bs.bing_bg:main'
         ]
     },
 
