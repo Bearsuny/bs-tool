@@ -1,6 +1,7 @@
 from urllib import request
 import re
 import os
+import time
 
 
 def get_bg(bg_name):
@@ -42,7 +43,8 @@ def get_story():
 
 
 def main():
+    time.sleep(5)
     bg_name = 'bg.png'
     get_bg(bg_name)
     set_bg(bg_name)
-    get_story()
+    # get_story()
