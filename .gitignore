@@ -8,3 +8,4 @@ bear_tool.egg-info/
 build/
 dist/
 bs_tool.egg-info/
+test/
